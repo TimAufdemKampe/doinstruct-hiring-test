@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 
-type LanguageContextType = string | null
+import { Language } from '../types/Language'
+
+type LanguageContextType = Language | null
 
 const LanguageContext = React.createContext<[LanguageContextType, React.Dispatch<React.SetStateAction<LanguageContextType>>] | undefined>(undefined)
 
@@ -10,12 +12,14 @@ type LanguageProviderProps = {
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const state = useState<LanguageContextType>(localStorage.getItem('currentLanguage'))
+  const state = useState<LanguageContextType>(
+    localStorage.getItem('currentLanguage') != null || localStorage.getItem('currentLanguage') != 'null' ? JSON.parse(localStorage.getItem('currentLanguage') as string) : null
+  )
   const [currentLanguage] = state
 
   useEffect(() => {
     if (currentLanguage != null) {
-      localStorage.setItem('currentLanguage', currentLanguage || '')
+      localStorage.setItem('currentLanguage', JSON.stringify(currentLanguage))
     }
   }, [currentLanguage])
 

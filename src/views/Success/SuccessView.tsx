@@ -1,26 +1,27 @@
 import styled from '@emotion/styled'
 import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 import { useCurrentLanguage } from '../../context/LanguageContext'
-import { Language } from '../../types/Language'
 
 export const SuccessView: React.FC = () => {
   const navigate = useNavigate()
 
   const [currentLanguage] = useCurrentLanguage()
-  const language: Language = currentLanguage ? JSON.parse(currentLanguage) : null
+
+  const { t } = useTranslation()
 
   useEffect(() => {
-    if (!language) navigate('/')
+    if (!currentLanguage) navigate('/')
   })
 
   return (
     <Container>
-      <h1>{language.name}</h1>
+      <h1>{currentLanguage!.name}</h1>
 
       <ImageContainer>
-        <Image src={'/assets/images/languages/' + language.code + '.svg'} alt="" />
+        <Image src={'/assets/images/languages/' + currentLanguage!.code + '.svg'} alt="" />
       </ImageContainer>
 
       <ControlsContainer>
@@ -28,7 +29,13 @@ export const SuccessView: React.FC = () => {
           onClick={() => {
             navigate('/')
           }}>
-          Zurück (Choose other language)
+          {t('back')}
+          {currentLanguage!.code != 'en' &&
+            ' (' +
+              t('back', {
+                lng: 'en',
+              }) +
+              ')'}
         </Text>
       </ControlsContainer>
     </Container>
@@ -51,6 +58,7 @@ const ImageContainer = styled.div`
 
 const Image = styled.img`
   width: 45%;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 `
 
 const ControlsContainer = styled.div`
@@ -64,4 +72,5 @@ const Text = styled.p`
   padding-top: 16px;
   color: #565656;
   cursor: pointer;
+  text-align: center;
 `

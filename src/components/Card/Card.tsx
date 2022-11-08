@@ -5,6 +5,8 @@ type CardType = {
   children: React.ReactNode
   showHoverEffect?: boolean
   onClick?: () => void
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
 }
 
 export const Card: React.FC<CardType> = ({ children, showHoverEffect, ...rest }) => {
