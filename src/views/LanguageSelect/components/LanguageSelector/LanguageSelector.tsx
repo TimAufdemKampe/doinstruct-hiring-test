@@ -1,10 +1,16 @@
 import styled from '@emotion/styled'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { Card } from '../Card/Card'
+import { Card } from '../../../../components/Card/Card'
+import { useCurrentLanguage } from '../../../../context/LanguageContext'
 import languageInformation from './../../../../assets/info.json'
 
 export const LanguageSelector: React.FC = () => {
+  const navigate = useNavigate()
+
+  const [, setCurrentLanguage] = useCurrentLanguage()
+
   return (
     <Container>
       {languageInformation.locales.map(locale => (
@@ -12,7 +18,8 @@ export const LanguageSelector: React.FC = () => {
           key={locale.code}
           showHoverEffect
           onClick={() => {
-            console.log(locale.name)
+            setCurrentLanguage(JSON.stringify(locale))
+            navigate('/success')
           }}>
           <Image src={'/assets/images/languages/' + locale.code + '.svg'} alt="TEST" />
           <Text>{locale.name}</Text>
