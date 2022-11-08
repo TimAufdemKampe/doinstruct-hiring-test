@@ -1,0 +1,11 @@
+{
+  "locales": [
+    { "code": "de", "name": "Deutsch", "iso": "de-DE", "file": "de.js" },
+    { "code": "en", "name": "English", "iso": "en-US", "file": "en.js" },
+    { "code": "pl", "name": "Polski", "iso": "pl-PL", "file": "pl.js" },
+    { "code": "ro", "name": "Română", "iso": "ro-RO", "file": "ro.js" },
+    { "code": "bg", "name": "Български", "iso": "bg-BG", "file": "bg.js" },
+    { "code": "hu", "name": "Magyar", "iso": "hu-HU", "file": "hu.js" },
+    { "code": "ru", "name": "Russian", "iso": "ru-RU", "file": "ru.js" }
+  ]
+}
