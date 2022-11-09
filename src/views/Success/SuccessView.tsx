@@ -15,7 +15,7 @@ export const SuccessView: React.FC = () => {
     <Container>
       {currentLanguage != null ? (
         <React.Fragment>
-          <h1>{currentLanguage.name}</h1>
+          <h1 data-testid={'success-view-header-success'}>{currentLanguage.name}</h1>
 
           <ImageContainer>
             <Image src={'/assets/images/languages/' + currentLanguage.code + '.svg'} alt={currentLanguage.code + '-flag'} />
@@ -50,7 +50,7 @@ export const SuccessView: React.FC = () => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <h1>An Error occurred</h1>
+          <h1 data-testid={'success-view-header-error'}>An Error occurred</h1>
 
           <Text
             onClick={() => {

@@ -10,7 +10,7 @@ export const LanguageSelectView: React.FC = () => {
   return (
     <div>
       <Header>
-        <h1>
+        <h1 data-testid={'language-select-view-header'}>
           {/* This translation hook will return the header in the current language and otherwise it will show the german translated header */}
           {t('header', {
             fallbackLng: 'de',

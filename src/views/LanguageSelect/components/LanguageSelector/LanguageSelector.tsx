@@ -21,6 +21,7 @@ export const LanguageSelector: React.FC = () => {
       {languageInformation.locales.map(locale => (
         <Card
           key={locale.code}
+          data-testid={`language-selector-card`}
           showHoverEffect
           onClick={() => {
             // Set the selected language to the context

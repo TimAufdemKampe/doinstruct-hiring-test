@@ -7,14 +7,20 @@ type LanguageContextType = Language | null
 
 type LanguageProviderProps = {
   children: React.ReactNode
+  // This property is here to make the LanguageProvider testable
+  contextValue?: LanguageContextType
 }
 
 const LanguageContext = React.createContext<[LanguageContextType, React.Dispatch<React.SetStateAction<LanguageContextType>>] | undefined>(undefined)
 
-export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children, contextValue }) => {
   // Local context state
   const [state, setState] = useState<LanguageContextType>(
-    localStorage.getItem('currentLanguage') != null || localStorage.getItem('currentLanguage') != 'null' ? JSON.parse(localStorage.getItem('currentLanguage') as string) : null
+    contextValue
+      ? contextValue
+      : localStorage.getItem('currentLanguage') != null || localStorage.getItem('currentLanguage') != 'null'
+      ? JSON.parse(localStorage.getItem('currentLanguage') as string)
+      : null
   )
   // Watch the state and sync it with the localStorage
   useEffect(() => {
