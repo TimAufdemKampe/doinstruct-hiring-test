@@ -2,17 +2,20 @@ import styled from '@emotion/styled'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useCurrentLanguage } from '../../context/LanguageContext'
 import { LanguageSelector } from './components/LanguageSelector/LanguageSelector'
 
 export const LanguageSelectView: React.FC = () => {
-  const [currentLanguage] = useCurrentLanguage()
   const { t } = useTranslation()
 
   return (
     <div>
       <Header>
-        <h1>{currentLanguage == null ? 'Welche Sprache sprichst du?' : t('header')}</h1>
+        <h1>
+          {/* This translation hook will return the header in the current language and otherwise it will show the german translated header */}
+          {t('header', {
+            fallbackLng: 'de',
+          })}
+        </h1>
       </Header>
 
       <LanguageSelector />
@@ -21,5 +24,5 @@ export const LanguageSelectView: React.FC = () => {
 }
 
 const Header = styled.div`
-  padding-bottom: 64px;
+  height: 144px;
 `

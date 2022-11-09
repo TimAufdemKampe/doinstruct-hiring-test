@@ -11,10 +11,10 @@ import languageInformation from './../../../../assets/info.json'
 export const LanguageSelector: React.FC = () => {
   const navigate = useNavigate()
 
-  const [currentLanguage, setCurrentLanguage] = useCurrentLanguage()
+  const [, setCurrentLanguage] = useCurrentLanguage()
 
-  // This is the language which is similar of the localStorage
-  const [storedLanguage, setStoredLanguage] = React.useState<Language | null>(null)
+  // This will copy the current selected language to this state to be able to change it after the mouse leaves the card
+  const [storedLanguage] = React.useState<Language | null>(languageInformation.locales.find(language => language.code === i18n.language) || null)
 
   return (
     <Container>
@@ -23,20 +23,22 @@ export const LanguageSelector: React.FC = () => {
           key={locale.code}
           showHoverEffect
           onClick={() => {
+            // Set the selected language to the context
             setCurrentLanguage(locale)
-            i18n.changeLanguage(locale.code).then(() => {
-              navigate('/success')
-            })
+            // Change the language of the i18n instance
+            i18n.changeLanguage(locale.code)
+            // Navigate to the success page
+            navigate('/success')
           }}
           onMouseEnter={() => {
-            setStoredLanguage(currentLanguage)
+            // Change the language of the i18n instance
             i18n.changeLanguage(locale.code)
           }}
           onMouseLeave={() => {
-            if (storedLanguage != null) i18n.changeLanguage(storedLanguage.code)
-            setStoredLanguage(null)
+            // Change the language of the i18n instance back to the stored language
+            if (storedLanguage) i18n.changeLanguage(storedLanguage.code)
           }}>
-          <Image src={'/assets/images/languages/' + locale.code + '.svg'} alt="TEST" />
+          <Image src={'/assets/images/languages/' + locale.code + '.svg'} alt={locale.code + '-flag'} />
           <Text>{locale.name}</Text>
         </Card>
       ))}

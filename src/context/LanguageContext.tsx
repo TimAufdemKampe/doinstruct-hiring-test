@@ -5,27 +5,28 @@ import { Language } from '../types/Language'
 
 type LanguageContextType = Language | null
 
-const LanguageContext = React.createContext<[LanguageContextType, React.Dispatch<React.SetStateAction<LanguageContextType>>] | undefined>(undefined)
-
 type LanguageProviderProps = {
   children: React.ReactNode
 }
 
+const LanguageContext = React.createContext<[LanguageContextType, React.Dispatch<React.SetStateAction<LanguageContextType>>] | undefined>(undefined)
+
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const state = useState<LanguageContextType>(
+  // Local context state
+  const [state, setState] = useState<LanguageContextType>(
     localStorage.getItem('currentLanguage') != null || localStorage.getItem('currentLanguage') != 'null' ? JSON.parse(localStorage.getItem('currentLanguage') as string) : null
   )
-  const [currentLanguage] = state
-
+  // Watch the state and sync it with the localStorage
   useEffect(() => {
-    if (currentLanguage != null) {
-      localStorage.setItem('currentLanguage', JSON.stringify(currentLanguage))
+    if (state != null) {
+      localStorage.setItem('currentLanguage', JSON.stringify(state))
     }
-  }, [currentLanguage])
+  }, [state])
 
-  return <LanguageContext.Provider value={state}>{children}</LanguageContext.Provider>
+  return <LanguageContext.Provider value={[state, setState]}>{children}</LanguageContext.Provider>
 }
 
+// A custom hook to get the language context
 export const useCurrentLanguage = (): [LanguageContextType, React.Dispatch<React.SetStateAction<LanguageContextType>>] => {
   return React.useContext(LanguageContext) as [LanguageContextType, React.Dispatch<React.SetStateAction<LanguageContextType>>]
 }

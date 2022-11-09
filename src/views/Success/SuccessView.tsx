@@ -1,43 +1,67 @@
 import styled from '@emotion/styled'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
+import { Card } from '../../components/Card/Card'
 import { useCurrentLanguage } from '../../context/LanguageContext'
 
 export const SuccessView: React.FC = () => {
   const navigate = useNavigate()
-
-  const [currentLanguage] = useCurrentLanguage()
-
   const { t } = useTranslation()
-
-  useEffect(() => {
-    if (!currentLanguage) navigate('/')
-  })
+  const [currentLanguage] = useCurrentLanguage()
 
   return (
     <Container>
-      <h1>{currentLanguage!.name}</h1>
+      {currentLanguage != null ? (
+        <React.Fragment>
+          <h1>{currentLanguage.name}</h1>
 
-      <ImageContainer>
-        <Image src={'/assets/images/languages/' + currentLanguage!.code + '.svg'} alt="" />
-      </ImageContainer>
+          <ImageContainer>
+            <Image src={'/assets/images/languages/' + currentLanguage.code + '.svg'} alt={currentLanguage.code + '-flag'} />
+          </ImageContainer>
 
-      <ControlsContainer>
-        <Text
-          onClick={() => {
-            navigate('/')
-          }}>
-          {t('back')}
-          {currentLanguage!.code != 'en' &&
-            ' (' +
-              t('back', {
-                lng: 'en',
-              }) +
-              ')'}
-        </Text>
-      </ControlsContainer>
+          <InformationContainer>
+            <Card>
+              <p>
+                <span>Code: </span>
+                <span>{currentLanguage.code}</span>
+              </p>
+              <p>
+                <span>ISO: </span>
+                <span>{currentLanguage.file}</span>
+              </p>
+              <p>
+                <span>File: </span>
+                <span>{currentLanguage.file}</span>
+              </p>
+            </Card>
+          </InformationContainer>
+
+          <ControlsContainer>
+            <Text
+              onClick={() => {
+                navigate('/')
+              }}>
+              <span>{t('back')}</span>
+              <span>{currentLanguage.code != 'en' && ' (' + t('back', { lng: 'en' }) + ')'}</span>
+            </Text>
+          </ControlsContainer>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <h1>An Error occurred</h1>
+
+          <Text
+            onClick={() => {
+              navigate('/')
+            }}>
+            {t('back', {
+              lng: 'en',
+            })}
+          </Text>
+        </React.Fragment>
+      )}
     </Container>
   )
 }
@@ -59,6 +83,10 @@ const ImageContainer = styled.div`
 const Image = styled.img`
   width: 45%;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+`
+
+const InformationContainer = styled.div`
+  padding-top: 64px;
 `
 
 const ControlsContainer = styled.div`
