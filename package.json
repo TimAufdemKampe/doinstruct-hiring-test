@@ -25,6 +25,7 @@
     "eslint-plugin-simple-import-sort": "8.0.0",
     "i18next": "^22.0.4",
     "jest-dom": "^4.0.0",
+    "jest-junit": "^14.0.1",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -38,6 +39,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "npm run test -- --watchAll=false --ci --coverage",
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint --fix"

@@ -1,0 +1,71 @@
+name: Lint, Test and Build React Application
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  setup-job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+      - name: Install dependencies
+        run: yarn install
+      - uses: airfocusio/github-actions/cache-node@v1.0.0
+
+  lint:
+    needs: [setup-job]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: airfocusio/github-actions/cache-node@v1.0.0
+      - name: Run Linting
+        run: yarn lint
+
+  test:
+    needs: [setup-job]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: airfocusio/github-actions/cache-node@v1.0.0
+      - name: Run Tests
+        run: yarn test:ci
+
+  build:
+      needs: [setup-job]
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Check out repository code
+          uses: actions/checkout@v3
+        - name: Use Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: 16
+        - uses: airfocusio/github-actions/cache-node@v1.0.0
+        - name: Run Build
+          run: yarn build
